@@ -17,3 +17,12 @@ instance_scheduler_enabled = true
 start_time                 = "cron(0 9 ? * MON-FRI *)"
 stop_time                  = "cron(0 18 ? * MON-FRI *)"
 timezone                   = "EET"
+
+
+Resources that are to be stopped or started by the scheduler should be tagged : 
+
+AutoOn = true
+
+or
+
+AutoOn = false
