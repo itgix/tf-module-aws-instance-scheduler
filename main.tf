@@ -1,6 +1,6 @@
 # IAM Role for  lambda
 resource "aws_iam_role" "lambda_role" {
-  name               = "lambda_start_stop"
+  name               = "lambda_start_stop${local.suffix}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -21,7 +21,7 @@ EOF
 # IAM policy for logging from a lambda
 resource "aws_iam_policy" "iam_policy_for_lambda" {
 
-  name        = "aws_iam_policy_for_terraform_aws_lambda_role"
+  name        = "aws_iam_policy_for_terraform_aws_lambda_role${local.suffix}"
   path        = "/"
   description = "AWS IAM Policy for managing aws lambda role"
   policy      = <<EOF
@@ -67,7 +67,7 @@ data "archive_file" "zip_the_python_code1" {
 # In terraform ${path.module} is the current directory.
 resource "aws_lambda_function" "lambda_start" {
   filename      = "${path.module}/python/start/start.zip"
-  function_name = "start"
+  function_name = "start${local.suffix}"
   role          = aws_iam_role.lambda_role.arn
   handler       = "start.lambda_handler"
   runtime       = "python3.10"
@@ -89,7 +89,7 @@ data "archive_file" "zip_the_python_code2" {
 }
 resource "aws_lambda_function" "lambda_stop" {
   filename      = "${path.module}/python/stop/stop.zip"
-  function_name = "stop"
+  function_name = "stop${local.suffix}"
   role          = aws_iam_role.lambda_role.arn
   handler       = "stop.lambda_handler"
   runtime       = "python3.10"
@@ -106,7 +106,7 @@ resource "aws_lambda_function" "lambda_stop" {
 }
 # IAM Role for Scheduler
 resource "aws_iam_role" "scheduler" {
-  name = "cron-scheduler-role"
+  name = "cron-scheduler-role${local.suffix}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -127,7 +127,7 @@ resource "aws_iam_role" "scheduler" {
 
 # IAM policy for Scheduler
 resource "aws_iam_policy" "scheduler_policy" {
-  name        = "scheduler_policy"
+  name        = "scheduler_policy${local.suffix}"
   description = "A policy to allow scheduler to start and stop EC2 instances"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -150,7 +150,7 @@ resource "aws_iam_role_policy_attachment" "attach_policy_to_scheduler" {
 }
 
 resource "aws_scheduler_schedule" "start-ec2-schedule" {
-  name        = "start-instances"
+  name        = "start-instances${local.suffix}"
   description = "Start Instances at a provided time"
 
   schedule_expression          = var.start_time
@@ -165,7 +165,7 @@ resource "aws_scheduler_schedule" "start-ec2-schedule" {
 }
 
 resource "aws_scheduler_schedule" "stop-ec2-schedule" {
-  name        = "stop-instances"
+  name        = "stop-instances${local.suffix}"
   description = "Stop Instances at a provided time"
 
 

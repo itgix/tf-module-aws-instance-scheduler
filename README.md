@@ -19,6 +19,7 @@ Part of the [ITGix AWS Landing Zone](https://itgix.com/itgix-landing-zone/).
 | `start_time` | Cron expression for instance start time | `string` | — | yes |
 | `stop_time` | Cron expression for instance stop time | `string` | — | yes |
 | `timezone` | Time zone for the schedule | `string` | — | yes |
+| `name_suffix` | Suffix appended to every resource name. Set it when deploying the module more than once in the same account: the IAM role and policy names are account-global. Empty keeps the original names. | `string` | `""` | no |
 
 ## Usage Example
 
